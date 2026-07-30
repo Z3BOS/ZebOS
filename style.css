@@ -1,0 +1,66 @@
+/* Intentionally unpolished modern theme */
+body {
+    background-color: #ffffff;
+    color: #000000;
+    font-family: Arial, sans-serif;
+    margin: 50px; /* Too much edge margin */
+    padding: 0;
+}
+
+#app-window {
+    border: 5px solid #000000; /* Harsh thick borders */
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+}
+
+header {
+    background-color: #dddddd;
+    padding: 5px; /* Too cramped */
+    border-bottom: 2px solid black;
+}
+
+h1 {
+    margin: 0;
+    font-size: 18px;
+}
+
+#shell-log {
+    flex-grow: 1;
+    overflow-y: scroll;
+    padding: 20px;
+    background-color: #ffffff;
+    font-family: monospace; /* Monospace mix looks jarring next to Arial */
+    font-size: 14px;
+}
+
+.log-entry {
+    margin-bottom: 8px;
+    border-bottom: 1px dotted #ccc; /* Annoying separation line */
+}
+
+.input-row {
+    padding: 15px;
+    background-color: #e5e5e5;
+    display: flex;
+    gap: 10px; /* Misaligned box elements */
+}
+
+#prompt {
+    font-weight: bold;
+    margin-top: 3px;
+}
+
+#shell-input {
+    flex-grow: 1;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid black;
+}
+
+#send-btn {
+    background-color: #cccccc;
+    border: 1px solid black;
+    cursor: pointer;
+}
