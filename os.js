@@ -4,7 +4,7 @@ const sendBtn = document.getElementById('send-btn');
 
 // State tracking & Virtual Storage Device System Container
 let systemState = { 
-    version: "1.5.0", 
+    version: "1.6.0", 
     currentUser: "guest", 
     uptime: 0,
     activeApp: null,
@@ -23,7 +23,7 @@ function appendToLog(text, type = 'system') {
     shellLog.scrollTop = shellLog.scrollHeight;
 }
 
-appendToLog("SYSTEM START: Initializing Zeb Kernel Beta...");
+appendToLog("SYSTEM START: Initializing Zeb Kernel Production Build...");
 appendToLog(`ZebOS Version ${systemState.version} loaded successfully.`);
 appendToLog("Type 'help' for a list of basic test triggers.");
 
@@ -38,20 +38,20 @@ async function runCommand(inputString) {
 
     switch (command) {
         case 'help':
-            appendToLog("Commands: help, status, version, edit [filename], view [filename], ls, calc, drivers, memusage, clear, alert [msg]");
+            appendToLog("Commands: help, status, version, edit [file], view [file], ls, rm [file], ren [old] [new], calc, snake, drivers, memusage, clear, alert [msg]");
             break;
         case 'status':
-            appendToLog(`User: ${systemState.currentUser} | ZebOS Beta Core Running!`);
+            appendToLog(`User: ${systemState.currentUser} | ZebOS Stable Core Active!`);
             break;
         case 'drivers':
             appendToLog(`Drivers are a feature coming soon! Sound support and more will be added later!`);
             break;
         case 'memusage':
             appendToLog(`Memory Usage (Estimated)`);
-            appendToLog(`Memory: 38.2MB | Virtual Objects Active Count: ${Object.keys(systemState.fileSystem).length + 1}`);
+            appendToLog(`Memory: 41.7MB | Total File Records Registered: ${Object.keys(systemState.fileSystem).length}`);
             break;
         case 'version':
-            appendToLog(`Current release branch: ${systemState.version} ZebOS Beta v1.5.0 (c) 2026 7Zeb`);
+            appendToLog(`Current release branch: ${systemState.version} ZebOS Production RTM v1.6.0 (c) 2026 7Zeb`);
             break;
             
         case 'ls': 
@@ -64,10 +64,42 @@ async function runCommand(inputString) {
             }
             break;
 
+        case 'rm': // Delete File Utility Extension
+            const targetRmFile = args[1];
+            if (!targetRmFile) {
+                appendToLog("Error: Missing argument. Usage: rm [filename]", "error");
+                break;
+            }
+            if (systemState.fileSystem.hasOwnProperty(targetRmFile)) {
+                delete systemState.fileSystem[targetRmFile];
+                appendToLog(`File system: successfully erased memory allocations for '${targetRmFile}'.`);
+            } else {
+                appendToLog(`Error: File record '${targetRmFile}' not found.`, "error");
+            }
+            break;
+
+        case 'ren': // Rename File Utility Extension
+            const oldName = args[1];
+            const newName = args[2];
+            if (!oldName || !newName) {
+                appendToLog("Error: Missing parameters. Usage: ren [old_filename] [new_filename]", "error");
+                break;
+            }
+            if (systemState.fileSystem.hasOwnProperty(oldName)) {
+                // Transfer storage cell buffer reference mappings cleanly
+                systemState.fileSystem[newName] = systemState.fileSystem[oldName];
+                delete systemState.fileSystem[oldName];
+                appendToLog(`File system: successfully renamed '${oldName}' to '${newName}'.`);
+            } else {
+                appendToLog(`Error: Target asset record '${oldName}' does not exist.`, "error");
+            }
+            break;
+
         case 'edit':
             const targetEditFile = args[1] || "untitled.txt";
             try {
-                const module = await import('./editor.js');
+                // Configured to point to the programs/ directory path
+                const module = await import('./programs/editor.js');
                 const existingContent = systemState.fileSystem[targetEditFile] || "";
                 
                 systemState.activeApp = new module.TextEditor(
@@ -83,22 +115,37 @@ async function runCommand(inputString) {
                 );
                 systemState.activeApp.open();
             } catch (err) {
-                appendToLog("Error: Failed to load editor.js app module system layer.", "error");
+                appendToLog("Error: Failed to fetch module from './programs/editor.js'. Check folders.", "error");
                 console.error(err);
             }
             break;
 
         case 'calc':
             try {
-                // Dynamically load the calculator code file on demand
-                const module = await import('./calc.js');
+                // Configured to point to the programs/ directory path
+                const module = await import('./programs/calc.js');
                 systemState.activeApp = new module.RetroCalculator(() => {
                     systemState.activeApp = null;
                     shellInput.focus();
                 });
                 systemState.activeApp.open();
             } catch (err) {
-                appendToLog("Error: Failed to load calc.js application framework layer.", "error");
+                appendToLog("Error: Failed to fetch module from './programs/calc.js'. Check folders.", "error");
+                console.error(err);
+            }
+            break;
+
+        case 'snake':
+            try {
+                // Configured to point to the programs/ directory path
+                const module = await import('./programs/snake.js');
+                systemState.activeApp = new module.SnakeGame(() => {
+                    systemState.activeApp = null;
+                    shellInput.focus();
+                });
+                systemState.activeApp.open();
+            } catch (err) {
+                appendToLog("Error: Failed to fetch module from './programs/snake.js'. Check folders.", "error");
                 console.error(err);
             }
             break;
@@ -113,7 +160,7 @@ async function runCommand(inputString) {
                 appendToLog(`--- READING FILE Content: ${targetViewFile} ---`);
                 appendToLog(systemState.fileSystem[targetViewFile]);
             } else {
-                appendToLog(`Error: File '${targetViewFile}' does not exist inside storage registry tree arrays.`, "error");
+                appendToLog(`Error: File '${targetViewFile}' does not exist.`, "error");
             }
             break;
 
