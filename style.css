@@ -69,25 +69,23 @@ h1 {
     cursor: pointer;
 }
 
-/* ==========================================================================
-   TOP BAR CONFIG CSS
-   ========================================================================== */
-
 .hidden-view {
     display: none !important;
 }
 
+/* ==========================================================================
+   Text Editor CSS
+   ========================================================================== */
 #editor-screen {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    background-color: #000080; /* Blue DOS Canvas Screen Color */
+    background-color: #000080; 
     color: #ffffff;
     font-family: monospace;
     position: relative;
 }
 
-/* Header Text Top Strip Options Bar Line */
 #editor-menu {
     background-color: #aaaaaa;
     color: #000000;
@@ -107,7 +105,6 @@ h1 {
     color: #ffffff;
 }
 
-/* Context Dropdown Absolute Element */
 #file-dropdown {
     position: absolute;
     top: 22px;
@@ -130,7 +127,6 @@ h1 {
     color: #ffffff;
 }
 
-/* Active Working Status Bar Block */
 #editor-titlebar {
     background-color: #00aaaa;
     color: #ffffff;
@@ -159,4 +155,86 @@ h1 {
     padding: 3px 10px;
     font-size: 13px;
     font-weight: bold;
+}
+
+/* ==========================================================================
+   Calc CSS
+   ========================================================================== */
+#calc-screen {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #800000; /* Dark Maroon Retro Finish */
+    color: #ffffff;
+    font-family: monospace;
+    padding: 20px;
+}
+
+#calc-titlebar {
+    background-color: #ff5555;
+    color: #000000;
+    width: 320px;
+    text-align: center;
+    font-weight: bold;
+    padding: 4px;
+    border: 2px solid #000000;
+    border-bottom: none;
+}
+
+#calc-display-box {
+    background-color: #000000;
+    color: #55ff55; /* Glowing matrix green numbers font */
+    width: 320px;
+    padding: 12px;
+    font-size: 28px;
+    text-align: right;
+    box-sizing: border-box;
+    border: 2px solid #000000;
+    overflow: hidden;
+}
+
+#calc-grid-pad {
+    display: grid;
+    grid-template-columns: repeat(4, 15fr);
+    gap: 6px;
+    width: 320px;
+    background-color: #cccccc;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 2px solid #000000;
+    border-top: none;
+    border-bottom: none;
+}
+
+.calc-btn {
+    background-color: #aaaaaa;
+    color: #000000;
+    border: 2px solid #000000;
+    padding: 12px 0;
+    font-size: 16px;
+    font-family: monospace;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.calc-btn:active {
+    background-color: #ffffff;
+}
+
+.calc-btn.mode-op { background-color: #ffaa55; }
+.calc-btn.mode-clear { background-color: #ff5555; }
+.calc-btn.mode-equal { background-color: #55ff55; }
+
+#calc-footer {
+    background-color: #ff5555;
+    color: #000000;
+    width: 320px;
+    box-sizing: border-box;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border: 2px solid #000000;
+    text-align: center;
 }
