@@ -1,25 +1,22 @@
-// editor.js
+// programs/editor.js
 export class TextEditor {
     constructor(fileName, fileContent, onExitCallback) {
         this.fileName = fileName;
         this.content = fileContent;
         this.onExit = onExitCallback;
         
-        // Query app container reference elements
         this.shellLog = document.getElementById('shell-log');
         this.inputRow = document.querySelector('.input-row');
         this.editorScreen = document.getElementById('editor-screen');
         this.textarea = document.getElementById('editor-textarea');
         this.fileNameSpan = document.getElementById('current-filename');
         
-        // Menu Elements
         this.menuFile = document.getElementById('menu-file');
         this.fileDropdown = document.getElementById('file-dropdown');
         this.optSave = document.getElementById('opt-save');
         this.optSaveAs = document.getElementById('opt-saveas');
         this.optExit = document.getElementById('opt-exit');
 
-        // Dynamic Bound Handlers for Clean Cleanup Hooks
         this.keyHandler = (e) => this.handleKeyDown(e);
         this.menuToggleHandler = (e) => this.toggleDropdown(e);
         this.saveClickHandler = () => this.saveFile();
@@ -67,22 +64,16 @@ export class TextEditor {
     saveFile() {
         this.content = this.textarea.value;
         this.hideMenu();
-        
         this.flashFooterFeedback(`SAVED SUCCESSFUL TO FILE: ${this.fileName}`);
     }
 
     saveAsFile() {
         this.hideMenu();
-        
-        // Open browser prompt to capture new file name target
         const newName = prompt("Enter new filename:", this.fileName);
-        
-        // If the user cancelled or provided empty strings, do not execute rename procedure
         if (newName === null || newName.trim() === "") {
             this.textarea.focus();
             return;
         }
-        
         this.fileName = newName.trim();
         this.content = this.textarea.value;
         this.fileNameSpan.textContent = this.fileName;
@@ -109,7 +100,6 @@ export class TextEditor {
 
     close() {
         this.content = this.textarea.value;
-        
         window.removeEventListener('keydown', this.keyHandler);
         this.menuFile.removeEventListener('click', this.menuToggleHandler);
         this.optSave.removeEventListener('click', this.saveClickHandler);
@@ -118,11 +108,9 @@ export class TextEditor {
         
         this.hideMenu();
         this.editorScreen.classList.add('hidden-view');
-        
         this.shellLog.classList.remove('hidden-view');
         this.inputRow.classList.remove('hidden-view');
         
-        // Pass final state back to os.js filesystem container map tracking
         this.onExit(this.fileName, this.content);
     }
 }
