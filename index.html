@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZebOS v1.4.1 (Alpha)</title>
+    <title>ZebOS v1.4.2 (Alpha)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app-window">
         <header>
-            <h1>ZebOS Alpha Version 1.4.1</h1>
+            <h1>ZebOS Alpha Version 1.4.2</h1>
         </header>
         
         <!-- Standard Command Shell Log View Component -->
@@ -22,6 +22,7 @@
                 <span class="menu-item" id="menu-file">File</span>
                 <div id="file-dropdown" class="hidden-view">
                     <div class="dropdown-option" id="opt-save">Save (F2)</div>
+                    <div class="dropdown-option" id="opt-saveas">Save As... (F3)</div>
                     <div class="dropdown-option" id="opt-exit">Exit (Esc)</div>
                 </div>
             </div>
@@ -30,7 +31,7 @@
             <!-- Interactive Editing Input Frame -->
             <textarea id="editor-textarea" spellcheck="false" placeholder="Type text here..."></textarea>
             <!-- Bottom Hotkey Shortcut Assist Strip -->
-            <div id="editor-footer">F2: Save File | Esc: Exit Editor View</div>
+            <div id="editor-footer">F2: Save File | F3: Save As | Esc: Exit Editor View</div>
         </div>
         
         <div class="input-row">
