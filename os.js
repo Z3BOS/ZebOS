@@ -4,7 +4,7 @@ const sendBtn = document.getElementById('send-btn');
 
 // State tracking for future releases
 let systemState = {
-    version: "1.0.0",
+    version: "1.0.1",
     currentUser: "guest",
     uptime: 0
 };
@@ -33,7 +33,7 @@ function runCommand(inputString) {
     if (!cleanInput) return;
 
     // Echo back the command entered
-    appendToLog(`user@devos:~$ ${cleanInput}`, 'user');
+    appendToLog(`user@zebos:~$ ${cleanInput}`, 'user');
 
     const args = cleanInput.split(' ');
     const command = args[0].toLowerCase();
@@ -44,6 +44,9 @@ function runCommand(inputString) {
             break;
         case 'status':
             appendToLog(`User: ${systemState.currentUser} | ZebOS Running!`);
+            break;
+        case 'drivers':
+            appendToLog(`Drivers are a feature coming soon! Sound support and more will be added later!`);
             break;
         case 'version':
             appendToLog(`Current release branch: ${systemState.version} ZebOS v1.0.0 (c) 2026 7Zeb`);
