@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZebOS Beta v1.5.0 (Milestone Edition)</title>
+    <title>ZebOS RTM v1.6.0)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app-window">
         <header>
-            <h1>ZebOS Beta Version 1.5.0</h1>
+            <h1>ZebOS RTM Version 1.6.0</h1>
         </header>
         
         <!-- Standard Command Shell Log View Component -->
@@ -54,6 +54,13 @@
                 <button class="calc-btn">.</button>
             </div>
             <div id="calc-footer">NumPad/Keys: Type Math Live | Esc: Exit Calculator</div>
+        </div>
+
+        <!-- Fullscreen Green Retro Snake Game Canvas Container Layer -->
+        <div id="snake-screen" class="hidden-view">
+            <div id="snake-titlebar">ZebOS Arcade: Matrix Snake v1.0</div>
+            <canvas id="snake-canvas" width="400" height="400"></canvas>
+            <div id="snake-footer">Score: <span id="snake-score">0</span> | Arrow Keys: Turn | Esc: Exit Game</div>
         </div>
         
         <div class="input-row">
