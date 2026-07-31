@@ -57,7 +57,8 @@ async function runCommand(inputString) {
             appendToLog(`Memory: 35.1MB`);
             break;
         case 'version':
-            appendToLog(`Current release branch: ${systemState.version} ZebOS v1.0.0 (c) 2026 7Zeb`);
+            appendToLog(`Current release branch: ${systemState.version} ZebOS v1.3.0 (c) 2026 7Zeb`);
+            appendToLog(`Compiled on: July 31, 2026`);
             break;
         case 'edit':
             try {
