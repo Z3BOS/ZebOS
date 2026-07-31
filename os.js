@@ -4,14 +4,13 @@ const sendBtn = document.getElementById('send-btn');
 
 // State tracking & Virtual Storage Device System Container
 let systemState = { 
-    version: "1.4.0", 
+    version: "1.4.1", 
     currentUser: "guest", 
     uptime: 0,
     activeApp: null,
     fileSystem: {
         "readme.txt": "Welcome to ZebOS! This file is inside your memory system storage context layer.",
-        "test.txt": "Hello World!"
-        "zeb.txt": "This is ZebOS"
+        "test.txt": "Hello World line buffer data output test script."
     }
 };
 
@@ -35,8 +34,9 @@ async function runCommand(inputString) {
     // Standard shell logging print hook back
     appendToLog(`user@zebos:~$ ${cleanInput}`, 'user');
     
+    // Split input by space to separate command from filenames/arguments
     const args = cleanInput.split(/\s+/);
-    const command = args[0].toLowerCase();
+    const command = args[0].toLowerCase(); // Use args[0] for the core command
 
     switch (command) {
         case 'help':
@@ -53,11 +53,11 @@ async function runCommand(inputString) {
             appendToLog(`Memory: 36.4MB | Total Virtual Storage Files: ${Object.keys(systemState.fileSystem).length}`);
             break;
         case 'version':
-            appendToLog(`Current release branch: ${systemState.version} ZebOS v1.4.0 (c) 2026 7Zeb`);
+            appendToLog(`Current release branch: ${systemState.version} ZebOS v1.4.1 (c) 2026 7Zeb`);
             break;
             
-        case 'ls': // ls, as in linux
-            appendToLog("--- YOUR HARD DRIVE ---");
+        case 'ls': 
+            appendToLog("--- VIRTUAL HARD DRIVE DIRECTORY MAP ---");
             const files = Object.keys(systemState.fileSystem);
             if (files.length === 0) {
                 appendToLog("[Directory is completely empty]");
@@ -67,18 +67,16 @@ async function runCommand(inputString) {
             break;
 
         case 'edit':
+            // If the user provided a filename (args[1]), use it; otherwise fallback to default
             const targetEditFile = args[1] || "untitled.txt";
             try {
                 const module = await import('./editor.js');
-                
-                // Read from fileSystem memory map or fallback to blank string values
                 const existingContent = systemState.fileSystem[targetEditFile] || "";
                 
                 systemState.activeApp = new module.TextEditor(
                     targetEditFile,
                     existingContent,
                     (savedName, savedData) => {
-                        // Callback to save changes into the core OS data state tree map layout
                         if (savedName) {
                             systemState.fileSystem[savedName] = savedData;
                         }
@@ -94,7 +92,7 @@ async function runCommand(inputString) {
             break;
 
         case 'view':
-            const targetViewFile = args[1];
+            const targetViewFile = args[1]; // Use args[1] to read the requested filename
             if (!targetViewFile) {
                 appendToLog("Error: Please provide a filename. Example: view notes.txt", "error");
                 break;
@@ -120,7 +118,6 @@ async function runCommand(inputString) {
 }
 
 function submitAction() {
-    // If text editor is taking full screen layout focus, lock normal command processor pipeline inputs
     if (systemState.activeApp) return;
     
     runCommand(shellInput.value);
