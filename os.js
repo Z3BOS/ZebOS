@@ -2,49 +2,45 @@ const shellLog = document.getElementById('shell-log');
 const shellInput = document.getElementById('shell-input');
 const sendBtn = document.getElementById('send-btn');
 
-// State tracking for future releases
+// State tracking & Virtual Storage Device System Container
 let systemState = { 
-    version: "1.3.0", 
+    version: "1.4.0", 
     currentUser: "guest", 
     uptime: 0,
-    activeApp: null // Holds the instance of the loaded external app
+    activeApp: null,
+    fileSystem: {
+        "readme.txt": "Welcome to ZebOS! This file is inside your memory system storage context layer.",
+        "test.txt": "Hello World!"
+        "zeb.txt": "This is ZebOS"
+    }
 };
 
-// Log printer helper function
 function appendToLog(text, type = 'system') {
     const entry = document.createElement('div');
     entry.className = `log-entry ${type}`;
-    // Modern timestamp formatting
     const time = new Date().toLocaleTimeString();
     entry.textContent = `[${time}] ${text}`;
     shellLog.appendChild(entry);
-    shellLog.scrollTop = shellLog.scrollHeight; // Auto scroll down
+    shellLog.scrollTop = shellLog.scrollHeight;
 }
 
-// Initial boot sequence printouts
 appendToLog("SYSTEM START: Initializing Zeb Kernel...");
 appendToLog(`ZebOS Version ${systemState.version} loaded successfully.`);
 appendToLog("Type 'help' for a list of basic test triggers.");
 
-// Basic modern command router
 async function runCommand(inputString) {
     const cleanInput = inputString.trim();
     if (!cleanInput) return;
 
-    // 1. APP INTERCEPTOR: If an app is running, feed it input directly
-    if (systemState.activeApp) {
-        systemState.activeApp.handleInput(inputString);
-        return;
-    }
-
-    // 2. KERNEL COMMANDS
+    // Standard shell logging print hook back
     appendToLog(`user@zebos:~$ ${cleanInput}`, 'user');
-    const args = cleanInput.split(' ');
+    
+    const args = cleanInput.split(/\s+/);
     const command = args[0].toLowerCase();
 
     switch (command) {
         case 'help':
-            appendToLog("Commands: help, status, version, edit, view, drivers, memusage, clear, alert [msg]");
+            appendToLog("Commands: help, status, version, edit [filename], view [filename], ls, drivers, memusage, clear, alert [msg]");
             break;
         case 'status':
             appendToLog(`User: ${systemState.currentUser} | ZebOS Running!`);
@@ -54,64 +50,84 @@ async function runCommand(inputString) {
             break;
         case 'memusage':
             appendToLog(`Memory Usage (Estimated)`);
-            appendToLog(`Memory: 35.1MB`);
+            appendToLog(`Memory: 36.4MB | Total Virtual Storage Files: ${Object.keys(systemState.fileSystem).length}`);
             break;
         case 'version':
-            appendToLog(`Current release branch: ${systemState.version} ZebOS v1.3.0 (c) 2026 7Zeb`);
-            appendToLog(`Compiled on: July 31, 2026`);
+            appendToLog(`Current release branch: ${systemState.version} ZebOS v1.4.0 (c) 2026 7Zeb`);
             break;
+            
+        case 'ls': // ls, as in linux
+            appendToLog("--- YOUR HARD DRIVE ---");
+            const files = Object.keys(systemState.fileSystem);
+            if (files.length === 0) {
+                appendToLog("[Directory is completely empty]");
+            } else {
+                files.forEach(fileName => appendToLog(` - ${fileName}`));
+            }
+            break;
+
         case 'edit':
+            const targetEditFile = args[1] || "untitled.txt";
             try {
-                // Dynamically import the editor module file on demand
                 const module = await import('./editor.js');
                 
-                // Instantiate the app and give it a callback to clear the OS state on exit
-                systemState.activeApp = new module.TextEditor(shellLog, () => {
-                    systemState.activeApp = null; 
-                });
+                // Read from fileSystem memory map or fallback to blank string values
+                const existingContent = systemState.fileSystem[targetEditFile] || "";
                 
+                systemState.activeApp = new module.TextEditor(
+                    targetEditFile,
+                    existingContent,
+                    (savedName, savedData) => {
+                        // Callback to save changes into the core OS data state tree map layout
+                        if (savedName) {
+                            systemState.fileSystem[savedName] = savedData;
+                        }
+                        systemState.activeApp = null;
+                        shellInput.focus();
+                    }
+                );
                 systemState.activeApp.open();
             } catch (err) {
-                appendToLog("Error: Failed to load editor.js app module.", "error");
+                appendToLog("Error: Failed to load editor.js app module system layer.", "error");
                 console.error(err);
             }
             break;
+
         case 'view':
-            if (systemState.activeApp) {
-                appendToLog(systemState.activeApp.getContent());
-            } else if (window.lastSavedContent) {
-                appendToLog("--- SAVED FILE CONTENT ---");
-                appendToLog(window.lastSavedContent);
+            const targetViewFile = args[1];
+            if (!targetViewFile) {
+                appendToLog("Error: Please provide a filename. Example: view notes.txt", "error");
+                break;
+            }
+            if (systemState.fileSystem.hasOwnProperty(targetViewFile)) {
+                appendToLog(`--- READING FILE Content: ${targetViewFile} ---`);
+                appendToLog(systemState.fileSystem[targetViewFile]);
             } else {
-                appendToLog("[No file data found in memory. Use 'edit' first]");
+                appendToLog(`Error: File '${targetViewFile}' does not exist inside storage registry tree arrays.`, "error");
             }
             break;
+
         case 'clear':
             shellLog.innerHTML = '';
             break;
         case 'alert':
             const message = args.slice(1).join(' ') || "No text provided!";
-            alert(message); // Standard browser alert popup
+            alert(message); 
             break;
         default:
-            appendToLog(`Error: Command '${command}' does not exist yet. Suggest for the next version!`, 'error');
+            appendToLog(`Error: Command '${command}' does not exist yet.`, 'error');
     }
 }
 
-// Event hooks to process input actions
 function submitAction() {
+    // If text editor is taking full screen layout focus, lock normal command processor pipeline inputs
+    if (systemState.activeApp) return;
+    
     runCommand(shellInput.value);
     shellInput.value = '';
     shellInput.focus();
 }
 
-shellInput.addEventListener('keydown', (e) => { 
-    if (e.key === 'Enter') submitAction(); 
-});
-
+shellInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitAction(); });
 sendBtn.addEventListener('click', submitAction);
-
-// Keep track of internal uptime ticks
-setInterval(() => {
-    systemState.uptime++;
-}, 1000);
+setInterval(() => { systemState.uptime++; }, 1000);
