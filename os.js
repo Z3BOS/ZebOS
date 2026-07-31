@@ -4,7 +4,7 @@ const sendBtn = document.getElementById('send-btn');
 
 // State tracking & Virtual Storage Device System Container
 let systemState = { 
-    version: "1.4.1", 
+    version: "1.4.2", 
     currentUser: "guest", 
     uptime: 0,
     activeApp: null,
@@ -53,7 +53,7 @@ async function runCommand(inputString) {
             appendToLog(`Memory: 36.4MB | Total Virtual Storage Files: ${Object.keys(systemState.fileSystem).length}`);
             break;
         case 'version':
-            appendToLog(`Current release branch: ${systemState.version} ZebOS v1.4.1 (c) 2026 7Zeb`);
+            appendToLog(`Current release branch: ${systemState.version} ZebOS v1.4.2 (c) 2026 7Zeb`);
             break;
             
         case 'ls': 
