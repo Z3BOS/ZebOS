@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZebOS v1.4.2 (Alpha)</title>
+    <title>ZebOS Beta v1.5.0 (Milestone Edition)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app-window">
         <header>
-            <h1>ZebOS Alpha Version 1.4.2</h1>
+            <h1>ZebOS Beta Version 1.5.0</h1>
         </header>
         
         <!-- Standard Command Shell Log View Component -->
@@ -17,7 +17,6 @@
         
         <!-- Fullscreen Blue MS-DOS Style Editor App Container Layer -->
         <div id="editor-screen" class="hidden-view">
-            <!-- Retro Active Dropdown Navigation Strip -->
             <div id="editor-menu">
                 <span class="menu-item" id="menu-file">File</span>
                 <div id="file-dropdown" class="hidden-view">
@@ -26,12 +25,35 @@
                     <div class="dropdown-option" id="opt-exit">Exit (Esc)</div>
                 </div>
             </div>
-            <!-- File Context Name Display Line -->
             <div id="editor-titlebar">File: <span id="current-filename">untitled.txt</span></div>
-            <!-- Interactive Editing Input Frame -->
             <textarea id="editor-textarea" spellcheck="false" placeholder="Type text here..."></textarea>
-            <!-- Bottom Hotkey Shortcut Assist Strip -->
             <div id="editor-footer">F2: Save File | F3: Save As | Esc: Exit Editor View</div>
+        </div>
+
+        <!-- Fullscreen Red Retro Calculator App Container Layer -->
+        <div id="calc-screen" class="hidden-view">
+            <div id="calc-titlebar">Calc v1.0</div>
+            <div id="calc-display-box">0</div>
+            <div id="calc-grid-pad">
+                <button class="calc-btn mode-clear">C</button>
+                <button class="calc-btn mode-op">/</button>
+                <button class="calc-btn mode-op">*</button>
+                <button class="calc-btn mode-op">-</button>
+                <button class="calc-btn">7</button>
+                <button class="calc-btn">8</button>
+                <button class="calc-btn">9</button>
+                <button class="calc-btn mode-op" style="grid-row: span 2; height: 100%;">+</button>
+                <button class="calc-btn">4</button>
+                <button class="calc-btn">5</button>
+                <button class="calc-btn">6</button>
+                <button class="calc-btn">1</button>
+                <button class="calc-btn">2</button>
+                <button class="calc-btn">3</button>
+                <button class="calc-btn mode-equal" style="grid-row: span 2; height: 100%;">=</button>
+                <button class="calc-btn" style="grid-column: span 2;">0</button>
+                <button class="calc-btn">.</button>
+            </div>
+            <div id="calc-footer">NumPad/Keys: Type Math Live | Esc: Exit Calculator</div>
         </div>
         
         <div class="input-row">
