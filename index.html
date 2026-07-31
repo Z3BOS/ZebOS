@@ -3,23 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZebOS v1.3.0 (Alpha Build)</title>
+    <title>ZebOS v1.4.0 (Alpha)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app-window">
         <header>
-            <h1>ZebOS Alpha Version 1.3.0</h1>
+            <h1>ZebOS Alpha Version 1.4.0</h1>
         </header>
-
+        
+        <!-- Standard Command Shell Log View Component -->
         <div id="shell-log"></div>
-
+        
+        <!-- Fullscreen Blue MS-DOS Style Editor App Container Layer -->
+        <div id="editor-screen" class="hidden-view">
+            <!-- Retro Active Dropdown Navigation Strip -->
+            <div id="editor-menu">
+                <span class="menu-item" id="menu-file">File</span>
+                <div id="file-dropdown" class="hidden-view">
+                    <div class="dropdown-option" id="opt-save">Save (F2)</div>
+                    <div class="dropdown-option" id="opt-exit">Exit (Esc)</div>
+                </div>
+            </div>
+            <!-- File Context Name Display Line -->
+            <div id="editor-titlebar">File: <span id="current-filename">untitled.txt</span></div>
+            <!-- Interactive Editing Input Frame -->
+            <textarea id="editor-textarea" spellcheck="false" placeholder="Type text here..."></textarea>
+            <!-- Bottom Hotkey Shortcut Assist Strip -->
+            <div id="editor-footer">F2: Save File | Esc: Exit Editor View</div>
+        </div>
+        
         <div class="input-row">
             <span id="prompt">user@zebos:~$</span>
             <input type="text" id="shell-input" placeholder="type command, type help for help..." autofocus>
             <button id="send-btn">Submit</button>
         </div>
     </div>
+    
     <script type="module" src="os.js"></script>
 </body>
 </html>
