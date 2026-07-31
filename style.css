@@ -3,21 +3,22 @@ body {
     background-color: #ffffff;
     color: #000000;
     font-family: Arial, sans-serif;
-    margin: 50px; /* Too much edge margin */
+    margin: 50px; 
     padding: 0;
 }
 
 #app-window {
-    border: 5px solid #000000; /* Harsh thick borders */
+    border: 5px solid #000000; 
     background-color: #f0f0f0;
     display: flex;
     flex-direction: column;
     height: 70vh;
+    position: relative;
 }
 
 header {
     background-color: #dddddd;
-    padding: 5px; /* Too cramped */
+    padding: 5px; 
     border-bottom: 2px solid black;
 }
 
@@ -31,20 +32,23 @@ h1 {
     overflow-y: scroll;
     padding: 20px;
     background-color: #ffffff;
-    font-family: monospace; /* Monospace mix looks jarring next to Arial */
+    font-family: monospace; 
     font-size: 14px;
 }
 
 .log-entry {
     margin-bottom: 8px;
-    border-bottom: 1px dotted #ccc; /* Annoying separation line */
+    border-bottom: 1px dotted #ccc; 
 }
+
+.log-entry.error { color: #ff0000; font-weight: bold; }
+.log-entry.user { color: #0000ff; }
 
 .input-row {
     padding: 15px;
     background-color: #e5e5e5;
     display: flex;
-    gap: 10px; /* Misaligned box elements */
+    gap: 10px; 
 }
 
 #prompt {
@@ -63,4 +67,96 @@ h1 {
     background-color: #cccccc;
     border: 1px solid black;
     cursor: pointer;
+}
+
+/* ==========================================================================
+   TOP BAR CONFIG CSS
+   ========================================================================== */
+
+.hidden-view {
+    display: none !important;
+}
+
+#editor-screen {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #000080; /* Blue DOS Canvas Screen Color */
+    color: #ffffff;
+    font-family: monospace;
+    position: relative;
+}
+
+/* Header Text Top Strip Options Bar Line */
+#editor-menu {
+    background-color: #aaaaaa;
+    color: #000000;
+    padding: 2px 15px;
+    font-size: 14px;
+    position: relative;
+}
+
+.menu-item {
+    cursor: pointer;
+    padding: 2px 8px;
+    font-weight: bold;
+}
+
+.menu-item:hover, .menu-item.active {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Context Dropdown Absolute Element */
+#file-dropdown {
+    position: absolute;
+    top: 22px;
+    left: 15px;
+    background-color: #aaaaaa;
+    color: #000000;
+    border: 1px solid #000000;
+    box-shadow: 4px 4px 0px #000000;
+    z-index: 10;
+    min-width: 120px;
+}
+
+.dropdown-option {
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.dropdown-option:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Active Working Status Bar Block */
+#editor-titlebar {
+    background-color: #00aaaa;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+    padding: 2px;
+    font-size: 13px;
+}
+
+#editor-textarea {
+    flex-grow: 1;
+    background-color: #000080;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    padding: 15px;
+    font-family: monospace;
+    font-size: 16px;
+    resize: none;
+    line-height: 1.4;
+}
+
+#editor-footer {
+    background-color: #00aaaa;
+    color: #000000;
+    padding: 3px 10px;
+    font-size: 13px;
+    font-weight: bold;
 }
