@@ -28,8 +28,6 @@ export class SnakeGame {
         
         window.addEventListener('keydown', this.keyHandler);
         this.resetGame();
-        
-        // Run the game engine frame ticks at a classic retro speed (100ms per step)
         this.gameInterval = setInterval(() => this.tick(), 100);
     }
 
@@ -52,30 +50,29 @@ export class SnakeGame {
     }
 
     handleKeyDown(e) {
-        if (e.key === 'Escape') {
-            e.preventDefault();
-            this.close();
-            return;
-        }
-
-        // Intercept Arrow Directions to change velocity vectors
+        if (e.key === 'Escape') { e.preventDefault(); this.close(); return; }
         if (e.key === 'ArrowUp' && this.dy === 0) { this.dx = 0; this.dy = -this.gridSize; }
         if (e.key === 'ArrowDown' && this.dy === 0) { this.dx = 0; this.dy = this.gridSize; }
         if (e.key === 'ArrowLeft' && this.dx === 0) { this.dx = -this.gridSize; this.dy = 0; }
         if (e.key === 'ArrowRight' && this.dx === 0) { this.dx = this.gridSize; this.dy = 0; }
-        
-        // Prevent window scrolling while using navigation pad keys
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-            e.preventDefault();
-        }
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) e.preventDefault();
     }
 
     tick() {
-        // Calculate new head coordinates position vectors
-        const head = { x: this.snake[0].x + this.dx, y: this.snake[0].y + this.dy };
+        // Calculate raw next segment projection vectors
+        let nextX = this.snake[0].x + this.dx;
+        let nextY = this.snake[0].y + this.dy;
+
+        // SP1 WRAP-AROUND PHYSICS: Loop coordinates smoothly to the opposite boundary edge
+        if (nextX < 0) nextX = this.canvas.width - this.gridSize;
+        if (nextX >= this.canvas.width) nextX = 0;
+        if (nextY < 0) nextY = this.canvas.height - this.gridSize;
+        if (nextY >= this.canvas.height) nextY = 0;
+
+        const head = { x: nextX, y: nextY };
         
-        // Frame boundary crash check loops
-        if (head.x < 0 || head.x >= this.canvas.width || head.y < 0 || head.y >= this.canvas.height || this.checkSelfCollision(head)) {
+        // Self-collision checks remain active to maintain game challenge
+        if (this.checkSelfCollision(head)) {
             alert(`GAME OVER! Final Score achieved: ${this.score}`);
             this.resetGame();
             return;
@@ -83,7 +80,6 @@ export class SnakeGame {
 
         this.snake.unshift(head);
 
-        // Check if snake head touches target coordinates
         if (head.x === this.food.x && head.y === this.food.y) {
             this.score += 10;
             this.scoreSpan.textContent = this.score;
@@ -100,11 +96,8 @@ export class SnakeGame {
     }
 
     draw() {
-        // Background Refresh
         this.ctx.fillStyle = '#000500';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Draw Matrix Grid Accent Background
         this.ctx.strokeStyle = '#001100';
         for (let i = 0; i < this.canvas.width; i += this.gridSize) {
             this.ctx.beginPath();
@@ -112,14 +105,10 @@ export class SnakeGame {
             this.ctx.moveTo(0, i); this.ctx.lineTo(this.canvas.width, i);
             this.ctx.stroke();
         }
-
-        // Draw Food Object Core
         this.ctx.fillStyle = '#ff5555';
         this.ctx.fillRect(this.food.x + 2, this.food.y + 2, this.gridSize - 4, this.gridSize - 4);
-
-        // Draw Snake Node Array Items
         this.snake.forEach((segment, idx) => {
-            this.ctx.fillStyle = idx === 0 ? '#55ff55' : '#00aa00'; // Flash head brighter
+            this.ctx.fillStyle = idx === 0 ? '#55ff55' : '#00aa00';
             this.ctx.fillRect(segment.x + 1, segment.y + 1, this.gridSize - 2, this.gridSize - 2);
         });
     }
@@ -127,7 +116,6 @@ export class SnakeGame {
     close() {
         clearInterval(this.gameInterval);
         window.removeEventListener('keydown', this.keyHandler);
-        
         this.snakeScreen.classList.add('hidden-view');
         this.shellLog.classList.remove('hidden-view');
         this.inputRow.classList.remove('hidden-view');
