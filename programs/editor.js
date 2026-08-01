@@ -47,18 +47,9 @@ export class TextEditor {
     }
 
     handleKeyDown(e) {
-        if (e.key === 'F2') {
-            e.preventDefault();
-            this.saveFile();
-        }
-        if (e.key === 'F3') {
-            e.preventDefault();
-            this.saveAsFile();
-        }
-        if (e.key === 'Escape') {
-            e.preventDefault();
-            this.close();
-        }
+        if (e.key === 'F2') { e.preventDefault(); this.saveFile(); }
+        if (e.key === 'F3') { e.preventDefault(); this.saveAsFile(); }
+        if (e.key === 'Escape') { e.preventDefault(); this.close(); }
     }
 
     saveFile() {
@@ -70,14 +61,10 @@ export class TextEditor {
     saveAsFile() {
         this.hideMenu();
         const newName = prompt("Enter new filename:", this.fileName);
-        if (newName === null || newName.trim() === "") {
-            this.textarea.focus();
-            return;
-        }
+        if (newName === null || newName.trim() === "") { this.textarea.focus(); return; }
         this.fileName = newName.trim();
         this.content = this.textarea.value;
         this.fileNameSpan.textContent = this.fileName;
-        
         this.flashFooterFeedback(`SAVED AS SUCCESSFUL: ${this.fileName}`);
         this.textarea.focus();
     }
@@ -91,7 +78,6 @@ export class TextEditor {
         const footer = document.getElementById('editor-footer');
         footer.textContent = message;
         footer.style.backgroundColor = "#55ff55";
-        
         setTimeout(() => {
             footer.textContent = "F2: Save File | F3: Save As | Esc: Exit Editor View";
             footer.style.backgroundColor = "#00aaaa";
@@ -110,7 +96,6 @@ export class TextEditor {
         this.editorScreen.classList.add('hidden-view');
         this.shellLog.classList.remove('hidden-view');
         this.inputRow.classList.remove('hidden-view');
-        
         this.onExit(this.fileName, this.content);
     }
 }
