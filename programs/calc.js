@@ -2,7 +2,6 @@
 export class RetroCalculator {
     constructor(onExitCallback) {
         this.onExit = onExitCallback;
-        
         this.shellLog = document.getElementById('shell-log');
         this.inputRow = document.querySelector('.input-row');
         this.calcScreen = document.getElementById('calc-screen');
@@ -22,7 +21,6 @@ export class RetroCalculator {
         this.inputRow.classList.add('hidden-view');
         this.calcScreen.classList.remove('hidden-view');
         this.clearAll();
-        
         window.addEventListener('keydown', this.keyHandler);
         this.calcScreen.addEventListener('click', this.clickHandler);
     }
@@ -33,11 +31,7 @@ export class RetroCalculator {
     }
 
     handleKeyDown(e) {
-        if (e.key === 'Escape') {
-            e.preventDefault();
-            this.close();
-            return;
-        }
+        if (e.key === 'Escape') { e.preventDefault(); this.close(); return; }
         const validKeys = "0123456789.+-*/=";
         if (validKeys.includes(e.key)) this.processInput(e.key);
         else if (e.key === 'Enter') this.processInput('=');
@@ -53,10 +47,7 @@ export class RetroCalculator {
     }
 
     appendDigit(digit) {
-        if (this.resetOnNextInput) {
-            this.currentValue = "";
-            this.resetOnNextInput = false;
-        }
+        if (this.resetOnNextInput) { this.currentValue = ""; this.resetOnNextInput = false; }
         if (digit === '.' && this.currentValue.includes('.')) return;
         if (this.currentValue === "0" && digit !== '.') this.currentValue = "";
         this.currentValue += digit;
@@ -86,11 +77,7 @@ export class RetroCalculator {
     }
 
     clearAll() {
-        this.currentValue = "0";
-        this.storedValue = null;
-        this.activeOperator = null;
-        this.resetOnNextInput = false;
-        this.updateDisplay();
+        this.currentValue = "0"; this.storedValue = null; this.activeOperator = null; this.resetOnNextInput = false; this.updateDisplay();
     }
 
     updateDisplay() {
