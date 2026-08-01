@@ -240,7 +240,7 @@ h1 {
 }
 
 /* ==========================================================================
-   RETRO SNAKE GAME CSS (MATRIX GREEN CANVAS)
+   Retro Snake Game CSS
    ========================================================================== */
 #snake-screen {
     flex-grow: 1;
@@ -248,7 +248,7 @@ h1 {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #001100; /* Deep Terminal Shadow */
+    background-color: #001100; 
     color: #00ff00;
     font-family: monospace;
     padding: 15px;
